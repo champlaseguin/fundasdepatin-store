@@ -218,10 +218,16 @@ async def registrar_usuario(usuario_data: UsuarioCreate):
     
     # Crear usuario
     usuario_dict = usuario_data.dict()
-    usuario_dict["password"] = hash_password(usuario_data.password)
-    usuario_obj = Usuario(**usuario_dict)
+    hashed_password = hash_password(usuario_data.password)
     
-    await db.usuarios.insert_one(usuario_obj.dict())
+    # Crear objeto Usuario sin password
+    usuario_obj = Usuario(**{k: v for k, v in usuario_dict.items() if k != 'password'})
+    
+    # Preparar datos para insertar en BD (incluyendo password)
+    usuario_db_dict = usuario_obj.dict()
+    usuario_db_dict["password"] = hashed_password
+    
+    await db.usuarios.insert_one(usuario_db_dict)
     return UsuarioResponse(**usuario_obj.dict())
 
 @api_router.post("/auth/login")
