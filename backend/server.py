@@ -252,8 +252,8 @@ async def root():
     return {"message": "API Tienda de Fundas de Patines", "version": "2.0.0"}
 
 @api_router.post("/productos", response_model=Producto)
-async def crear_producto(producto: ProductoCreate, admin_user: Usuario = Depends(get_admin_user)):
-    """Crear un nuevo producto (solo administradores)"""
+async def crear_producto(producto: ProductoCreate):
+    """Crear un nuevo producto"""
     producto_dict = producto.dict()
     producto_obj = Producto(**producto_dict)
     await db.productos.insert_one(producto_obj.dict())
