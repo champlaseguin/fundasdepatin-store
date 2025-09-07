@@ -311,11 +311,13 @@ async def eliminar_producto(producto_id: str, admin_user: Usuario = Depends(get_
 
 # RUTAS PARA CARRITO
 @api_router.post("/carrito", response_model=Carrito)
-async def crear_carrito(carrito_data: CarritoCreate, current_user: Optional[Usuario] = None):
+async def crear_carrito(carrito_data: CarritoCreate):
     """Crear un nuevo carrito"""
     try:
-        current_user = await get_current_user()
-        carrito_data.usuario_id = current_user.id
+        # Try to get current user from token if available
+        from fastapi import Request
+        # For now, we'll handle anonymous users
+        pass
     except:
         pass  # Usuario anónimo
     
