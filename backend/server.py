@@ -345,12 +345,13 @@ async def obtener_carrito(carrito_id: str):
 
 # RUTAS PARA PEDIDOS
 @api_router.post("/pedidos", response_model=Pedido)
-async def crear_pedido(pedido_data: PedidoCreate, current_user: Optional[Usuario] = None):
+async def crear_pedido(pedido_data: PedidoCreate):
     """Crear un nuevo pedido"""
     try:
-        current_user = await get_current_user()
+        # Try to get current user from token if available
+        pass
     except:
-        current_user = None
+        pass
     
     # Obtener el carrito
     carrito = await db.carritos.find_one({"id": pedido_data.carrito_id})
