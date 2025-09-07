@@ -361,8 +361,7 @@ async def crear_pedido(pedido_data: PedidoCreate):
     # Crear el pedido
     pedido_dict = pedido_data.dict()
     pedido_dict["total"] = carrito["total"]
-    if current_user:
-        pedido_dict["usuario_id"] = current_user.id
+    # For now, handle anonymous orders
     pedido_obj = Pedido(**pedido_dict)
     
     await db.pedidos.insert_one(pedido_obj.dict())
